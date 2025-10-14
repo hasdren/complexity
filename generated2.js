@@ -2,60 +2,81 @@ app.post("/log-nutrients", async (req, res) => {
   const { username, logDate, calories, protein, fats, carbohydrates, water } =
     req.body;
 
-  if (!username || !calories || !protein || !fats || !carbohydrates || !water) {
-    return res.status(400).json({ error: "All nutrient fields are required." });
+  // Validate required fields
+  const requiredFields = {
+    username,
+    calories,
+    protein,
+    fats,
+    carbohydrates,
+    water,
+  };
+  const missingFields = Object.entries(requiredFields)
+    .filter(
+      ([_, value]) => value == null || value === undefined || value === ""
+    )
+    .map(([key]) => key);
+
+  if (missingFields.length > 0) {
+    return res.status(400).json({
+      error: "Missing required fields.",
+      missingFields,
+    });
   }
 
-  const activityDate = logDate ? new Date(logDate) : new Date();
-  const localDate = new Date(activityDate.setHours(0, 0, 0, 0));
-  const utcDate = new Date(
-    localDate.getTime() - localDate.getTimezoneOffset() * 60000
-  );
+  // Helper: Get UTC midnight for a given date
+  const getUtcDate = (date) => {
+    const localDate = new Date(date);
+    localDate.setHours(0, 0, 0, 0);
+    return new Date(
+      localDate.getTime() - localDate.getTimezoneOffset() * 60000
+    );
+  };
+
+  const utcDate = getUtcDate(logDate || new Date());
+
+  // Calculate next day UTC midnight
+  const nextDayUtc = new Date(utcDate);
+  nextDayUtc.setDate(nextDayUtc.getDate() + 1);
 
   try {
     const existingLog = await NutrientLog.findOne({
       username,
-      date: {
-        $gte: utcDate,
-        $lt: new Date(utcDate).setDate(utcDate.getDate() + 1),
-      },
+      date: { $gte: utcDate, $lt: nextDayUtc },
     });
 
+    const logData = {
+      calories,
+      protein,
+      fats,
+      carbohydrates,
+      water,
+      date: utcDate,
+    };
+
+    let result;
+    let status = 201;
+    let message = "Nutrient log created successfully.";
+
     if (existingLog) {
-      // Update existing log
-      existingLog.calories = calories;
-      existingLog.protein = protein;
-      existingLog.fats = fats;
-      existingLog.carbohydrates = carbohydrates;
-      existingLog.water = water;
-
-      const updatedLog = await existingLog.save();
-      return res.status(200).json({
-        success: true,
-        message: "Nutrient log updated successfully.",
-        updatedLog,
-      });
+      Object.assign(existingLog, logData);
+      result = await existingLog.save();
+      status = 200;
+      message = "Nutrient log updated successfully.";
     } else {
-      // Create new log
-      const newLog = new NutrientLog({
-        username,
-        date: utcDate,
-        calories,
-        protein,
-        fats,
-        carbohydrates,
-        water,
-      });
-
-      const savedLog = await newLog.save();
-      return res.status(201).json({
-        success: true,
-        message: "Nutrient log created successfully.",
-        savedLog,
-      });
+      const newLog = new NutrientLog({ username, ...logData });
+      result = await newLog.save();
     }
+
+    return res.status(status).json({
+      success: true,
+      message,
+      log: result,
+    });
   } catch (error) {
     console.error("Error logging nutrients:", error);
-    res.status(500).json({ error: "Server error while logging nutrients." });
+    return res.status(500).json({
+      error: "Server error while logging nutrients.",
+    });
   }
 });
