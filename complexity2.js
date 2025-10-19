@@ -2,13 +2,11 @@ app.post("/log-nutrients", async (req, res) => {
   const { username, logDate, calories, protein, fats, carbohydrates, water } =
     req.body;
 
-  /*if (!username || !calories || !protein || !fats || !carbohydrates || !water) {
+  if (!username || !calories || !protein || !fats || !carbohydrates || !water) {
     return res.status(400).json({ error: "All nutrient fields are required." });
   }
-  /*
 
-  /*const activityDate = logDate ? new Date(logDate) : new Date();
-   */
+  const activityDate = logDate ? new Date(logDate) : new Date();
   const localDate = new Date(activityDate.setHours(0, 0, 0, 0));
 
   const utcDate = new Date(
@@ -48,8 +46,7 @@ app.post("/log-nutrients", async (req, res) => {
 
         updatedLog,
       });
-    }
-    /*else {
+    } else {
       // Create new log
 
       const newLog = new NutrientLog({
@@ -78,7 +75,6 @@ app.post("/log-nutrients", async (req, res) => {
         savedLog,
       });
     }
-   */
   } catch (error) {
     console.error("Error logging nutrients:", error);
 
