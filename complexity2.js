@@ -48,7 +48,8 @@ app.post("/log-nutrients", async (req, res) => {
 
         updatedLog,
       });
-    } /*else {
+    }
+    /*else {
       // Create new log
 
       const newLog = new NutrientLog({
@@ -76,8 +77,8 @@ app.post("/log-nutrients", async (req, res) => {
 
         savedLog,
       });
-      */
     }
+   */
   } catch (error) {
     console.error("Error logging nutrients:", error);
 
