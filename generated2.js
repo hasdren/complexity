@@ -9,8 +9,9 @@ app.post("/log-nutrients", async (req, res) => {
 */
 
   // Normalize date to UTC midnight
-  const date = new Date(logDate || Date.now());
+  /*const date = new Date(logDate || Date.now());
   date.setUTCHours(0, 0, 0, 0);
+  */
 
   try {
     // Find existing log for the same user and date
