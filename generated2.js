@@ -3,15 +3,13 @@ app.post("/log-nutrients", async (req, res) => {
     req.body;
 
   // Basic validation
-  /* if (!username || !calories || !protein || !fats || !carbohydrates || !water) {
+  if (!username || !calories || !protein || !fats || !carbohydrates || !water) {
     return res.status(400).json({ error: "All nutrient fields are required." });
   }
-*/
 
   // Normalize date to UTC midnight
-  /*const date = new Date(logDate || Date.now());
+  const date = new Date(logDate || Date.now());
   date.setUTCHours(0, 0, 0, 0);
-  */
 
   try {
     // Find existing log for the same user and date
