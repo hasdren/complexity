@@ -17,14 +17,12 @@ app.post("/update-user-profile", async (req, res) => {
     }
 
     // Update the user profile
-    /*
     user.dob = newDob || user.dob;
     user.weight = weight || user.weight;
     user.height = height || user.height;
     user.gender = gender || user.gender;
     user.goal = goal || user.goal;
     user.password = updatedPassword; // Update password if new password was provided
-    */
     // Save the updated user data
     await user.save();
 
