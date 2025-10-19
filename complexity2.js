@@ -2,11 +2,11 @@ app.post("/log-nutrients", async (req, res) => {
   const { username, logDate, calories, protein, fats, carbohydrates, water } =
     req.body;
 
-  if (!username) {
+  if (!username || !calories || !protein || !fats || !carbohydrates || !water) {
     return res.status(400).json({ error: "All nutrient fields are required." });
   }
 
-  const activityDate = logDate ? new Date(logDate) : new Date();
+  // const activityDate = logDate ? new Date(logDate) : new Date();
   const localDate = new Date(activityDate.setHours(0, 0, 0, 0));
   const utcDate = new Date(
     localDate.getTime() - localDate.getTimezoneOffset() * 60000
