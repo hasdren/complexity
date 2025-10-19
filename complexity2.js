@@ -35,7 +35,8 @@ app.post("/log-nutrients", async (req, res) => {
         message: "Nutrient log updated successfully.",
         updatedLog,
       });
-    } else {
+    }
+    /*else {
       // Create new log
       const newLog = new NutrientLog({
         username,
@@ -54,6 +55,7 @@ app.post("/log-nutrients", async (req, res) => {
         savedLog,
       });
     }
+    */
   } catch (error) {
     console.error("Error logging nutrients:", error);
     res.status(500).json({ error: "Server error while logging nutrients." });
