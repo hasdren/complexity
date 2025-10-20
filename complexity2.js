@@ -1,4 +1,5 @@
 app.post("/log-nutrients", async (req, res) => {
+  /*
   const { username, logDate, calories, protein, fats, carbohydrates, water } =
     req.body;
 
@@ -80,4 +81,5 @@ app.post("/log-nutrients", async (req, res) => {
 
     res.status(500).json({ error: "Server error while logging nutrients." });
   }
+    */
 });
