@@ -8,7 +8,8 @@ app.post("/log-nutrients", async (req, res) => {
   }
   */
 
-  const activityDate = logDate ? new Date(logDate) : new Date();
+  /*const activityDate = logDate ? new Date(logDate) : new Date();
+   */
   const localDate = new Date(activityDate.setHours(0, 0, 0, 0));
 
   const utcDate = new Date(
