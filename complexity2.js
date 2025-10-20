@@ -27,6 +27,7 @@ app.post("/log-nutrients", async (req, res) => {
       },
     });
 
+    /*
     if (existingLog) {
       // Update existing log
 
@@ -49,7 +50,9 @@ app.post("/log-nutrients", async (req, res) => {
 
         updatedLog,
       });
-    } else {
+    }
+    */
+      else {
       // Create new log
 
       const newLog = new NutrientLog({
