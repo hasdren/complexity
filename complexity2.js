@@ -46,7 +46,25 @@ app.post("/log-nutrients", async (req, res) => {
 
         updatedLog,
       });
-    }
+    } else if (existingLog) {
+      // Create new log
+
+      const newLog = new NutrientLog({
+        username,
+
+        date: utcDate,
+
+        calories,
+
+        protein,
+
+        fats,
+
+        carbohydrates,
+
+        water,
+      });
+
       const savedLog = await newLog.save();
 
       return res.status(201).json({
