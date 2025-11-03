@@ -3,27 +3,25 @@ app.post("/update-user-profile", async (req, res) => {
     req.body;
 
   try {
-    // Find the user in the database
     const user = await User.findOne({ username });
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // If a new password is provided, hash it before saving
-    let updatedPassword = user.password; // Keep the current password if no new one is provided
+    let updatedPassword = user.password;
     if (newPassword) {
-      updatedPassword = await bcrypt.hash(newPassword, 10); // Hash the new password
+      updatedPassword = await bcrypt.hash(newPassword, 10); 
     }
 
-    // Update the user profile
     user.dob = newDob || user.dob;
     user.weight = weight || user.weight;
     user.height = height || user.height;
     user.gender = gender || user.gender;
     user.goal = goal || user.goal;
-    user.password = updatedPassword; // Update password if new password was provided
-    // Save the updated user data
+    user.password = updatedPassword; 
+
+  
     await user.save();
 
     // Respond with success

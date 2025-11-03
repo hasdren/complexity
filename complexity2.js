@@ -25,7 +25,7 @@ app.post("/log-nutrients", async (req, res) => {
     });
 
     if (existingLog) {
-      // Update existing log
+      // Update exis  ting log
 
       existingLog.calories = calories;
 
